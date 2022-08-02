@@ -16,14 +16,7 @@ def get_asset_url_full(asset_id):
     return 'https://{0}/{1}'.format(app_qpylib.get_console_fqdn(), get_asset_url(asset_id))
 
 def get_asset_json(asset_id):
-    # Actual implementation commented out for now - see get_asset_url above
-    #response = qpylib.REST('get', get_asset_url(asset_id))
-    #if response.status_code != 200:
-    #    raise ValueError('Could not retrieve asset')
-    #return response.json()
-    asset_json = {}
-    asset_json['id'] = asset_id
-    return asset_json
+    return {'id': asset_id}
 
 def get_asset_rendering(asset_id, render_type):
     rendering_fn = _choose_asset_rendering(render_type)
@@ -37,12 +30,14 @@ def _choose_asset_rendering(render_type):
 
 def get_asset_json_ld(asset_id):
     asset_json = get_asset_json(asset_id)
-    return json_qpylib.json_ld(JSON_LD_CONTEXT,
-                               get_asset_url_full(asset_id),
-                               'asset',
-                               'Asset details',
-                               'Asset details for id ' + str(asset_id),
-                               asset_json)
+    return json_qpylib.json_ld(
+        JSON_LD_CONTEXT,
+        get_asset_url_full(asset_id),
+        'asset',
+        'Asset details',
+        f'Asset details for id {str(asset_id)}',
+        asset_json,
+    )
 
 def get_asset_json_html(asset_id, generate_html=None):
     asset_json = get_asset_json(asset_id)

@@ -64,10 +64,10 @@ def log(message, level):
     global LOG_LEVEL_TO_FUNCTION
     if not LOG_LEVEL_TO_FUNCTION:
         raise RuntimeError('You cannot use log before logging has been initialised')
-    log_function = LOG_LEVEL_TO_FUNCTION.get(level.upper())
-    if not log_function:
+    if log_function := LOG_LEVEL_TO_FUNCTION.get(level.upper()):
+        log_function(message)
+    else:
         raise ValueError("Unknown level: '{0}'".format(level))
-    log_function(message)
 
 def set_log_level(level='INFO'):
     global QLOGGER
@@ -82,11 +82,8 @@ def _log_file_location():
     return app_qpylib.get_log_path('app.log')
 
 def _generate_handlers():
-    handlers = []
-
     app_id = str(app_qpylib.get_app_id())
-    handlers.append(_create_file_handler(app_id))
-
+    handlers = [_create_file_handler(app_id)]
     address = None
     qradar_app_uuid = None
     try:

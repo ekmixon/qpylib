@@ -48,9 +48,7 @@ def _add_headers(headers, version=None):
 
 def _add_proxies():
     qradar_rest_proxy = os.getenv('QRADAR_REST_PROXY')
-    if qradar_rest_proxy is None:
-        return {}
-    return {'https': qradar_rest_proxy}
+    return {} if qradar_rest_proxy is None else {'https': qradar_rest_proxy}
 
 def _generate_full_url(request_url):
     return "https://{0}/{1}".format(app_qpylib.get_console_fqdn(), request_url)

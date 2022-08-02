@@ -38,17 +38,17 @@ def _choose_offense_rendering(render_type):
 
 def get_offense_json_ld(offense_id):
     offense_json = get_offense_json(offense_id)
-    return json_qpylib.json_ld(JSON_LD_CONTEXT,
-                               get_offense_url_full(offense_id),
-                               'offense',
-                               'Offense details',
-                               'Offense details for id ' + str(offense_id),
-                               offense_json)
+    return json_qpylib.json_ld(
+        JSON_LD_CONTEXT,
+        get_offense_url_full(offense_id),
+        'offense',
+        'Offense details',
+        f'Offense details for id {str(offense_id)}',
+        offense_json,
+    )
 
 def get_offense_json_html(offense_id, generate_html=None, generate_heading=True):
-    offense_html = ''
-    if generate_heading:
-        offense_html = get_offense_html_header(offense_id)
+    offense_html = get_offense_html_header(offense_id) if generate_heading else ''
     offense_json = get_offense_json(offense_id)
     if generate_html is None:
         offense_html += get_offense_html_example(offense_json)

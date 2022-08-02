@@ -18,9 +18,13 @@ def env_qradar_console_fqdn():
     del os.environ['QRADAR_CONSOLE_FQDN']
 
 def mock_offense_response(offense_id):
-    responses.add(responses.GET, 'https://myhost.ibm.com/api/siem/offenses/' + str(offense_id),
-                  content_type='application/json', status=200,
-                  json={'id': 1234, 'offense_source': '9.10.11.12', 'severity': 2})
+    responses.add(
+        responses.GET,
+        f'https://myhost.ibm.com/api/siem/offenses/{str(offense_id)}',
+        content_type='application/json',
+        status=200,
+        json={'id': 1234, 'offense_source': '9.10.11.12', 'severity': 2},
+    )
 
 def test_get_offense_url():
     assert offense_qpylib.get_offense_url(1234) == 'api/siem/offenses/1234'

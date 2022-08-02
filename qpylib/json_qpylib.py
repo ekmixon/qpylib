@@ -40,8 +40,7 @@ def register_jsonld_type(jsonld_type, context):
     JSONLD_TYPES[str(jsonld_type)] = context
 
 def register_jsonld_type_from_context(context):
-    jsonld_type = _extract_type_from_context(context)
-    if jsonld_type:
+    if jsonld_type := _extract_type_from_context(context):
         register_jsonld_type(jsonld_type, context)
 
 def _extract_type_from_context(context):
@@ -81,9 +80,7 @@ def to_json_dict(python_obj, classkey=None):
     if isinstance(python_obj, str):
         return python_obj
     if isinstance(python_obj, dict):
-        data = {}
-        for (k, val) in list(python_obj.items()):
-            data[k] = to_json_dict(val, classkey)
+        data = {k: to_json_dict(val, classkey) for k, val in list(python_obj.items())}
         return data
     if hasattr(python_obj, "__iter__"):
         return [to_json_dict(v, classkey) for v in python_obj]
